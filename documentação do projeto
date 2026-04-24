@@ -1,0 +1,105 @@
+Requisitos Funcionais (RF)
+RF01: Cadastrar vendas
+RF02: Gerar automaticamente ordens de serviço a partir de vendas
+RF03: Gerar faturas com base nas vendas
+RF04: Listar vendas, ordens e faturas
+RF05: Registrar e gerenciar chamados de suporte
+RF06: Classificar chamados por severidade e impacto
+RF07: Gerenciar usuários e perfis de acesso
+RF08: Registrar logs de auditoria
+RF09: Permitir consulta de logs
+Requisitos Não Funcionais (RNF)
+RNF01: O sistema deve possuir alta disponibilidade
+RNF02: Deve suportar múltiplos usuários simultâneos
+RNF03: Deve garantir integridade dos dados
+RNF04: Deve possuir tempo de recuperação inferior a 1 hora
+RNF05: Deve garantir segurança dos dados (criptografia)
+RNF06: Deve possuir controle de acesso por perfil
+RNF07: Deve ser escalável
+RNF08: Deve manter logs detalhados
+RNF09: Deve garantir consistência entre módulos
+RNF10: Deve atender à LGPD
+Regras de Negócio (RN)
+RN01: Toda venda deve gerar uma ordem de serviço
+RN02: Toda venda deve gerar uma fatura correspondente
+RN03: Não é permitido faturamento com dados inconsistentes
+RN04: Chamados devem ser classificados por prioridade
+RN05: Chamados críticos têm prioridade máxima
+RN06: Usuários acessam dados conforme seu perfil
+RN07: Toda ação relevante deve ser registrada em log
+RN08: Alterações devem ser rastreáveis
+
+MER – Modelo Entidade-Relacionamento
+Entidades:
+Usuário
+Venda
+Ordem de Serviço
+Fatura
+Chamado
+Log
+Relacionamentos
+Usuário → Log (1:N)
+Venda → Ordem de Serviço (1:1)
+Venda → Fatura (1:1)
+Sistema → Chamados (1:N)
+DER – Diagrama Entidade-Relacionamento
+USUARIO (id, nome, email, senha, perfil)
+
+VENDA (id, cliente, valor, status)
+
+ORDEM_SERVICO (id, venda_id, status)
+
+FATURA (id, venda_id, valor, status)
+
+CHAMADO (id, titulo, severidade, impacto, status)
+
+LOG (id, usuario_id, acao, data)
+Relacionamentos:
+VENDA 1 --- 1 ORDEM_SERVICO
+VENDA 1 --- 1 FATURA
+USUARIO 1 --- N LOG
+Modelagem do banco de dados
+Chaves primárias (PK) em todas as tabelas
+Chaves estrangeiras (FK) para integridade
+Sem redundância desnecessária
+ordens_servico.venda_id → vendas.id
+faturas.venda_id → vendas.id
+logs.usuario_id → usuarios.id
+
+Descrição da arquitetura da solução
+Arquitetura em camadas:
+Apresentação: Interface (HTML/JS)
+Controller: Recebe requisições HTTP
+Service: Implementa regras de negócio
+Repository: Acesso ao banco
+Banco de Dados: PostgreSQL
+Fluxo:
+Usuário → Front-end → Controller → Service → Repository → Banco
+Demais artefatos pertinentes à disciplina de Engenharia de Software
+Caso de Uso: Criar Venda
+•	Ator: Usuário 
+•	Fluxo: 
+1.	Usuário insere dados 
+2.	Sistema valida 
+3.	Sistema salva venda 
+4.	Sistema gera ordem de serviço 
+5.	Sistema gera fatura
+Diagrama de Caso de Uso (texto)
+[Usuário] → (Cadastrar Venda)
+[Usuário] → (Gerar Fatura)
+[Usuário] → (Abrir Chamado)
+[Admin] → (Gerenciar Usuários)
+
+Diagrama de Sequência
+Usuário → Front → Controller → Service → Repository → Banco
+
+Plano de Testes (resumo)
+•	Testes funcionais (RF e RN) 
+•	Testes não funcionais (RNF) 
+•	Validação de integração entre módulos
+Matriz de Rastreabilidade (exemplo)
+RF01 → Teste criação de venda
+RF02 → Teste geração de ordem
+RN01 → Validado automaticamente no service
+
+@agdelira
